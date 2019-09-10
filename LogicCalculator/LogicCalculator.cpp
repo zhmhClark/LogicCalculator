@@ -4,6 +4,7 @@ bool LogicCalculator::calculate(int val)
 {
 	valGotExp = expression;
 	int n = val;
+	//将传入参数处理为真值组（十进制整数转化成二进制）
 	bool* values = new bool[num];
 	for (int i = num - 1; i >= 0; i--)
 	{
@@ -11,6 +12,7 @@ bool LogicCalculator::calculate(int val)
 		n /= 2;
 	}
 	int size = expression.size();
+	//用真值替换变元
 	for (int i = 0; i < size; i++)
 	{
 		char& c = valGotExp[i];
@@ -23,19 +25,20 @@ bool LogicCalculator::calculate(int val)
 		}
 	}
 	delete[] values;
+	//真值指派后，调用具体计算函数
 	return calculateExp();
 }
 
 bool LogicCalculator::calculateExp()
 {
-	bool res = calculateTerm();
+	bool res = calculateTerm();	//递归调用，算表达式里的项
 	bool stop = false;
 	while (!stop)
 	{
 		if (!valGotExp.size())	break;
 		char op = valGotExp[0];
 		bool nextTerm = false;
-		switch (op)
+		switch (op)				//相邻项的逻辑运算
 		{
 		case '&':
 			valGotExp = valGotExp.substr(1);
@@ -47,17 +50,17 @@ bool LogicCalculator::calculateExp()
 			nextTerm = calculateTerm();
 			res = res || nextTerm;
 			break;
-		case '-':
+		case '-':								// ->运算
 			valGotExp = valGotExp.substr(2);
 			nextTerm = calculateTerm();
 			res = (!res) || nextTerm;
 			break;
-		case '<':
+		case '<':								// <->运算
 			valGotExp = valGotExp.substr(3);
 			nextTerm = calculateTerm();
 			res = (res==nextTerm);
 			break;
-		case '^':
+		case '^':								// 异或运算
 			valGotExp = valGotExp.substr(1);
 			nextTerm = calculateTerm();
 			res = (res != nextTerm);
@@ -72,12 +75,12 @@ bool LogicCalculator::calculateExp()
 bool LogicCalculator::calculateTerm()
 {
 	int notNum = 0;
-	while (valGotExp[0] == '!')
+	while (valGotExp[0] == '!')				//处理非运算
 	{
 		valGotExp = valGotExp.substr(1);
 		notNum++;
 	}
-	bool res = calculatefactor();
+	bool res = calculatefactor();			//递归调用，处理项里的因子
 	if(notNum%2)
 	return !res;
 	return res;
@@ -86,13 +89,13 @@ bool LogicCalculator::calculateTerm()
 bool LogicCalculator::calculatefactor()
 {
 	bool res;
-	if (valGotExp[0] == '(')
+	if (valGotExp[0] == '(')				//因子由 '(' + 表达式 + ')' 构成
 	{
 		valGotExp = valGotExp.substr(1);
-		res = calculateExp();
+		res = calculateExp();				//递归调用，处理因子里的表达式
 		valGotExp = valGotExp.substr(1);
 	}
-	else
+	else									//因子是单独的变元
 	{
 		res = valGotExp[0] - '0';
 		valGotExp = valGotExp.substr(1);
@@ -100,9 +103,8 @@ bool LogicCalculator::calculatefactor()
 	return res;
 }
 
-LogicCalculator::LogicCalculator(const string& exp)
+LogicCalculator::LogicCalculator(const string& exp):expression(exp),valGotExp(exp)
 {
-	expression = valGotExp = exp;
 	int size = expression.size();
 	for (int i = 0; i < size; i++)
 	{
