@@ -7,22 +7,23 @@ using namespace std;
 class LogicCalculator
 {
 private:
-	const string expression;	//ÃüÌâ¹«Ê½
-	string valGotExp;			//value-got expression,¼´Ö¸ÅÉÕæÖµµÄÃüÌâ¹«Ê½
-	int num;					//±äÔªÊıÁ¿
-	vector<char> names;			//±äÔªÃû³Æ
-	bool calculate(int);		//Ö¸ÅÉÕæÖµºóµÄ¼ÆËãº¯Êı£¬½«´«ÈëµÄ²ÎÊı´¦ÀíÎªÕæÖµ£¬ÔÙµ÷ÓÃÒÔÏÂ¾ßÌå¼ÆËãº¯Êı
+	const string expression;	//å‘½é¢˜å…¬å¼
+	string valGotExp;			//value-got expression,å³æŒ‡æ´¾çœŸå€¼çš„å‘½é¢˜å…¬å¼
+	int num;					//å˜å…ƒæ•°é‡
+	vector<char> names;			//å˜å…ƒåç§°
+	bool calculate(int);		//æŒ‡æ´¾çœŸå€¼åçš„è®¡ç®—å‡½æ•°ï¼Œå°†ä¼ å…¥çš„å‚æ•°å¤„ç†ä¸ºçœŸå€¼ï¼Œå†è°ƒç”¨ä»¥ä¸‹å…·ä½“è®¡ç®—å‡½æ•°
 	
-	//ÒÔÏÂÈı¸ö¾ßÌå¼ÆËãº¯ÊıÏà»¥µ÷ÓÃ£¬¹¹³Éµİ¹é£¬½öÔÚbool calculate(int) ÖĞµ÷ÓÃ£¬¼ÆËãÖ¸ÅÉÕæÖµºóµÄ±í´ïÊ½µÄÖµ
-	bool calculateExp();		//¼ÆËã±í´ïÊ½
-	bool calculateTerm();		//¼ÆËãÏî
-	bool calculatefactor();		//¼ÆËãÒò×Ó
-
+	//ä»¥ä¸‹ä¸‰ä¸ªå…·ä½“è®¡ç®—å‡½æ•°ç›¸äº’è°ƒç”¨ï¼Œæ„æˆé€’å½’ï¼Œä»…åœ¨bool calculate(int) ä¸­è°ƒç”¨ï¼Œè®¡ç®—æŒ‡æ´¾çœŸå€¼åçš„è¡¨è¾¾å¼çš„å€¼
+	bool calculateExp();		//è®¡ç®—è¡¨è¾¾å¼
+	bool calculateTerm();		//è®¡ç®—é¡¹
+	bool calculatefactor();		//è®¡ç®—å› å­
+	void PrintExpression(bool flag); //è¾“å…¥1ä¸ºå’Œå–  0ä¸ºæå–
+	
 public:
 	LogicCalculator(const string&);
-	void printChart();			//¼ÆËã²¢Êä³öÕæÖµ±í £¨´ıÍê³É£º½«¼ÆËãºÍÊä³ö·ÖÀë£©
-	void printOrExpression();	//´ıÍê³É£ºÖ÷ÎöÈ¡·¶Ê½
-	void printAndExpression();	//´ıÍê³É£ºÖ÷ºÏÈ¡·¶Ê½
+	void printChart();			//è®¡ç®—å¹¶è¾“å‡ºçœŸå€¼è¡¨ ï¼ˆå¾…å®Œæˆï¼šå°†è®¡ç®—å’Œè¾“å‡ºåˆ†ç¦»ï¼‰
+	void printOrExpression();	//å¾…å®Œæˆï¼šä¸»æå–èŒƒå¼
+	void printAndExpression();	//å¾…å®Œæˆï¼šä¸»åˆå–èŒƒå¼
 };
 
 
