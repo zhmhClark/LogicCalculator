@@ -147,13 +147,13 @@ void LogicCalculator::printChart()
 
 void LogicCalculator::printOrExpression()
 {
-    cout<<"∑";
-    PrintExpression(0);
+	cout << "sigma";
+	PrintExpression(0);
 }
 
 void LogicCalculator::printAndExpression()
 {
-    cout<<"∏";
+    cout<<"pie";
     PrintExpression(1);
 }
 
