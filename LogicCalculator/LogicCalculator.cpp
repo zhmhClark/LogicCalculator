@@ -4,7 +4,7 @@ bool LogicCalculator::calculate(int val)
 {
 	valGotExp = expression;
 	int n = val;
-	//½«´«Èë²ÎÊı´¦ÀíÎªÕæÖµ×é£¨Ê®½øÖÆÕûÊı×ª»¯³É¶ş½øÖÆ£©
+	//å°†ä¼ å…¥å‚æ•°å¤„ç†ä¸ºçœŸå€¼ç»„ï¼ˆåè¿›åˆ¶æ•´æ•°è½¬åŒ–æˆäºŒè¿›åˆ¶ï¼‰
 	bool* values = new bool[num];
 	for (int i = num - 1; i >= 0; i--)
 	{
@@ -12,7 +12,7 @@ bool LogicCalculator::calculate(int val)
 		n /= 2;
 	}
 	int size = expression.size();
-	//ÓÃÕæÖµÌæ»»±äÔª
+	//ç”¨çœŸå€¼æ›¿æ¢å˜å…ƒ
 	for (int i = 0; i < size; i++)
 	{
 		char& c = valGotExp[i];
@@ -25,20 +25,20 @@ bool LogicCalculator::calculate(int val)
 		}
 	}
 	delete[] values;
-	//ÕæÖµÖ¸ÅÉºó£¬µ÷ÓÃ¾ßÌå¼ÆËãº¯Êı
+	//çœŸå€¼æŒ‡æ´¾åï¼Œè°ƒç”¨å…·ä½“è®¡ç®—å‡½æ•°
 	return calculateExp();
 }
 
 bool LogicCalculator::calculateExp()
 {
-	bool res = calculateTerm();	//µİ¹éµ÷ÓÃ£¬Ëã±í´ïÊ½ÀïµÄÏî
+	bool res = calculateTerm();	//é€’å½’è°ƒç”¨ï¼Œç®—è¡¨è¾¾å¼é‡Œçš„é¡¹
 	bool stop = false;
 	while (!stop)
 	{
 		if (!valGotExp.size())	break;
 		char op = valGotExp[0];
 		bool nextTerm = false;
-		switch (op)				//ÏàÁÚÏîµÄÂß¼­ÔËËã
+		switch (op)				//ç›¸é‚»é¡¹çš„é€»è¾‘è¿ç®—
 		{
 		case '&':
 			valGotExp = valGotExp.substr(1);
@@ -50,17 +50,17 @@ bool LogicCalculator::calculateExp()
 			nextTerm = calculateTerm();
 			res = res || nextTerm;
 			break;
-		case '-':								// ->ÔËËã
+		case '-':								// ->è¿ç®—
 			valGotExp = valGotExp.substr(2);
 			nextTerm = calculateTerm();
 			res = (!res) || nextTerm;
 			break;
-		case '<':								// <->ÔËËã
+		case '<':								// <->è¿ç®—
 			valGotExp = valGotExp.substr(3);
 			nextTerm = calculateTerm();
 			res = (res==nextTerm);
 			break;
-		case '^':								// Òì»òÔËËã
+		case '^':								// å¼‚æˆ–è¿ç®—
 			valGotExp = valGotExp.substr(1);
 			nextTerm = calculateTerm();
 			res = (res != nextTerm);
@@ -75,12 +75,12 @@ bool LogicCalculator::calculateExp()
 bool LogicCalculator::calculateTerm()
 {
 	int notNum = 0;
-	while (valGotExp[0] == '!')				//´¦Àí·ÇÔËËã
+	while (valGotExp[0] == '!')				//å¤„ç†éè¿ç®—
 	{
 		valGotExp = valGotExp.substr(1);
 		notNum++;
 	}
-	bool res = calculatefactor();			//µİ¹éµ÷ÓÃ£¬´¦ÀíÏîÀïµÄÒò×Ó
+	bool res = calculatefactor();			//é€’å½’è°ƒç”¨ï¼Œå¤„ç†é¡¹é‡Œçš„å› å­
 	if(notNum%2)
 	return !res;
 	return res;
@@ -89,13 +89,13 @@ bool LogicCalculator::calculateTerm()
 bool LogicCalculator::calculatefactor()
 {
 	bool res;
-	if (valGotExp[0] == '(')				//Òò×ÓÓÉ '(' + ±í´ïÊ½ + ')' ¹¹³É
+	if (valGotExp[0] == '(')				//å› å­ç”± '(' + è¡¨è¾¾å¼ + ')' æ„æˆ
 	{
 		valGotExp = valGotExp.substr(1);
-		res = calculateExp();				//µİ¹éµ÷ÓÃ£¬´¦ÀíÒò×ÓÀïµÄ±í´ïÊ½
+		res = calculateExp();				//é€’å½’è°ƒç”¨ï¼Œå¤„ç†å› å­é‡Œçš„è¡¨è¾¾å¼
 		valGotExp = valGotExp.substr(1);
 	}
-	else									//Òò×ÓÊÇµ¥¶ÀµÄ±äÔª
+	else									//å› å­æ˜¯å•ç‹¬çš„å˜å…ƒ
 	{
 		res = valGotExp[0] - '0';
 		valGotExp = valGotExp.substr(1);
@@ -147,8 +147,27 @@ void LogicCalculator::printChart()
 
 void LogicCalculator::printOrExpression()
 {
+    cout<<"âˆ‘";
+    PrintExpression(0);
 }
 
 void LogicCalculator::printAndExpression()
 {
+    cout<<"âˆ";
+    PrintExpression(1);
+}
+
+void LogicCalculator::PrintExpression(bool flag) {
+    int situations = 1;
+    situations = pow(2,num);
+    int flag1 = 0;
+    cout<<"[";
+    for (int i = 0; i < situations; i++)
+        if(calculate(i)^flag) {
+            if(flag1)
+                cout<<',';
+            cout << i;
+            flag1 = 1;
+        }
+    cout<<"]\n";
 }
